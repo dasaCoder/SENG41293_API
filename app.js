@@ -11,71 +11,69 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// get all todos
-app.get('/api/v1/todos', (req, res) => {
-  res.status(200).send({
-    success: 'true',
-    message: 'todos retrieved successfully',
-    todos: db
-  })
+app.get('/codeToState', (req, res) => {
+
+    const code = req.query.code;
+    
+    return res.status(200).send({
+        success: 'true',
+        message: states_hash[code]
+    });
+
 });
 
-app.post('/api/v1/todos', (req, res) => {
-    if(!req.body.title) {
-      return res.status(400).send({
-        success: 'false',
-        message: 'title is required'
-      });
-    } else if(!req.body.description) {
-      return res.status(400).send({
-        success: 'false',
-        message: 'description is required'
-      });
-    }
-   const todo = {
-     id: db.length + 1,
-     title: req.body.title,
-     description: req.body.description
-   }
-   db.push(todo);
-   return res.status(201).send({
-     success: 'true',
-     message: 'todo added successfully',
-     todo
-   })
-  });
 
+app.get('/stateToCode', (req, res) => {
 
-    app.get('/codeToState', (req, res) => {
-
-        const code = req.query.code;
-        
-        return res.status(200).send({
-            success: 'true',
-            message: states_hash[code]
-        });
+    const stateName = req.query.state;
     
-    });
-
-
-    app.get('/stateToCode', (req, res) => {
-
-        const state = req.query.state;
-        
-        db.map((todo) => {
-        if (todo.id === id) {
-            return res.status(200).send({
-            success: 'true',
-            message: 'todo retrieved successfully',
-            todo,
-            });
-        } 
+    states_titlecase.map((state) => {
+    if (state.name === stateName) {
+        return res.status(200).send({
+        success: 'true',
+        message: state.abbreviation,
         });
-    return res.status(404).send({
-        success: 'false',
-        message: 'todo does not exist',
-        });
+    } 
     });
+return res.status(404).send({
+    success: 'false',
+    message: 'state does not exist',
+    });
+});
+
+// // get all todos
+// app.get('/api/v1/todos', (req, res) => {
+//   res.status(200).send({
+//     success: 'true',
+//     message: 'todos retrieved successfully',
+//     todos: db
+//   })
+// });
+
+// app.post('/api/v1/todos', (req, res) => {
+//     if(!req.body.title) {
+//       return res.status(400).send({
+//         success: 'false',
+//         message: 'title is required'
+//       });
+//     } else if(!req.body.description) {
+//       return res.status(400).send({
+//         success: 'false',
+//         message: 'description is required'
+//       });
+//     }
+//    const todo = {
+//      id: db.length + 1,
+//      title: req.body.title,
+//      description: req.body.description
+//    }
+//    db.push(todo);
+//    return res.status(201).send({
+//      success: 'true',
+//      message: 'state added successfully',
+//      todo
+//    })
+//   });
 
 
 const PORT = 5000;

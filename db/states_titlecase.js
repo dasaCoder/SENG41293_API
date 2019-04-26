@@ -1,4 +1,4 @@
-[
+const states_titlecase = [
     {
         "name": "Alabama",
         "abbreviation": "AL"
@@ -235,4 +235,6 @@
         "name": "Wyoming",
         "abbreviation": "WY"
     }
-]
+];
+
+export default states_titlecase;
