@@ -1,5 +1,7 @@
 import express from 'express';
 import db from './db/db';
+import states_hash from './db/states_hash';
+import states_titlecase from './db/states_titlecase';
 import bodyParser from 'body-parser';
 
 // Set up the express app
@@ -17,6 +19,65 @@ app.get('/api/v1/todos', (req, res) => {
     todos: db
   })
 });
+
+app.post('/api/v1/todos', (req, res) => {
+    if(!req.body.title) {
+      return res.status(400).send({
+        success: 'false',
+        message: 'title is required'
+      });
+    } else if(!req.body.description) {
+      return res.status(400).send({
+        success: 'false',
+        message: 'description is required'
+      });
+    }
+   const todo = {
+     id: db.length + 1,
+     title: req.body.title,
+     description: req.body.description
+   }
+   db.push(todo);
+   return res.status(201).send({
+     success: 'true',
+     message: 'todo added successfully',
+     todo
+   })
+  });
+
+
+    app.get('/codeToState', (req, res) => {
+
+        const code = req.query.code;
+        
+        return res.status(200).send({
+            success: 'true',
+            message: states_hash[code]
+        });
+    
+    });
+
+
+    app.get('/stateToCode', (req, res) => {
+
+        const state = req.query.state;
+        
+        db.map((todo) => {
+        if (todo.id === id) {
+            return res.status(200).send({
+            success: 'true',
+            message: 'todo retrieved successfully',
+            todo,
+            });
+        } 
+        });
+    return res.status(404).send({
+        success: 'false',
+        message: 'todo does not exist',
+        });
+    });
+
+
 const PORT = 5000;
 
 app.listen(PORT, () => {
