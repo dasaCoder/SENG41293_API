@@ -13,9 +13,15 @@ let stHashClient = redis.createClient();
 
 
 stHashClient.on('connect', function(){
-    
-    for(var hash of states_hash) {
-        console.log(hash);
+    for(var i in states_hash) {
+       
+        stHashClient.set(i, states_hash[i], function(err, reply){
+            if(err){
+              console.log(err);
+            }
+            //console.log(reply);
+            //res.redirect('/');
+        });
     }
 });
 
@@ -26,11 +32,32 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.get('/codeToState', (req, res) => {
 
     const code = req.query.code;
-    
-    return res.status(200).send({
-        success: 'true',
-        message: states_hash[code]
+    console.log('test',code);
+    stHashClient.get(code, function(err, obj){
+        if(err) {
+            console.log(err);
+
+            return res.status(200).send({
+                success: 'false',
+                message: 'Error occured!'
+            });
+        }
+        if(obj){
+            return res.status(200).send({
+                    success: 'true',
+                    message: obj
+                });
+        } else {
+            return res.status(200).send({
+                    success: 'false',
+                    message: 'No matching value found!'
+                });
+        }
     });
+    // return res.status(200).send({
+    //     success: 'true',
+    //     message: states_hash[code]
+    // });
 
 });
 
