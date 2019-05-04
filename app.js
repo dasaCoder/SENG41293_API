@@ -9,10 +9,14 @@ const redis = require('redis');
 const app = express();
 
 // Create Redis Client
-let client = redis.createClient();
+let stHashClient = redis.createClient();
 
-client.on('connect', function(){
-  console.log('Connected to Redis...');
+
+stHashClient.on('connect', function(){
+    
+    for(var hash of states_hash) {
+        console.log(hash);
+    }
 });
 
 // Parse incoming requests data
