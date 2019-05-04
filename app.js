@@ -3,9 +3,17 @@ import db from './db/db';
 import states_hash from './db/states_hash';
 import states_titlecase from './db/states_titlecase';
 import bodyParser from 'body-parser';
+const redis = require('redis');
 
 // Set up the express app
 const app = express();
+
+// Create Redis Client
+let client = redis.createClient();
+
+client.on('connect', function(){
+  console.log('Connected to Redis...');
+});
 
 // Parse incoming requests data
 app.use(bodyParser.json());
