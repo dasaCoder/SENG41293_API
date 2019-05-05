@@ -54,10 +54,7 @@ app.get('/codeToState', (req, res) => {
                 });
         }
     });
-    // return res.status(200).send({
-    //     success: 'true',
-    //     message: states_hash[code]
-    // });
+    
 
 });
 
