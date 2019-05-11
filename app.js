@@ -28,20 +28,19 @@ app.get('/stateToCode', (req, res) => {
     const stateName = req.query.state;
     
     states_titlecase.map((state) => {
-    if (state.name === stateName) {
-        return res.status(200).send({
-        success: 'true',
-        message: state.abbreviation,
-        });
-    } 
+        if (state.name === stateName) {
+            return res.status(200).send({
+            success: 'true',
+            message: state.abbreviation,
+            });
+        } else {
+           
+        }
     });
-return res.status(404).send({
-    success: 'false',
-    message: 'state does not exist',
-    });
+
 });
 
-// // get all todos
+// // get all todos`
 // app.get('/api/v1/todos', (req, res) => {
 //   res.status(200).send({
 //     success: 'true',
